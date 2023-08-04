@@ -1,44 +1,53 @@
+import 'package:chat_application/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:email_validator/email_validator.dart';
 
 class CustomTextFormField extends StatelessWidget {
   String? hintText;
+  Widget? suffix;
+  bool obscureText;
   Function(String)? onChanged;
-  CustomTextFormField({
-    this.onChanged,
-    this.hintText,
-  });
+  CustomTextFormField(
+      {super.key,
+      this.onChanged,
+      this.hintText,
+      this.suffix,
+      required this.obscureText});
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      // keyboardType: TextInputType.emailAddress,
-      validator: (data) {
-        if (data!.isEmpty) {
-          return 'field if empty ';
-        }
-        // else if (!EmailValidator.validate(data)) {
-        //   return 'invalid';
-        // }
-      },
-      onChanged: onChanged,
-      decoration: InputDecoration(
-        hintText: hintText,
-        hintStyle: const TextStyle(
-          color: Colors.grey,
-        ),
-        focusedBorder: const OutlineInputBorder(
-          borderSide: BorderSide(
-            color: Colors.white,
+    return Container(
+      height: 50,
+      child: TextFormField(
+        keyboardType: TextInputType.visiblePassword,
+        obscureText: obscureText,
+        // keyboardType: TextInputType.emailAddress,
+        validator: (data) {
+          if (data!.isEmpty) {
+            return 'field if empty ';
+          }
+          return null;
+          // else if (!EmailValidator.validate(data)) {
+          //   return 'invalid';
+          // }
+        },
+        onChanged: onChanged,
+        decoration: InputDecoration(
+          suffixIcon: suffix,
+          hintText: hintText,
+          hintStyle: const TextStyle(
+            color: Colors.grey,
           ),
-        ),
-        enabledBorder: const OutlineInputBorder(
-          borderSide: BorderSide(
-            color: Colors.white,
+          focusedBorder: const OutlineInputBorder(
+            borderSide: BorderSide(
+              color: kPrimaryColorGrey,
+            ),
           ),
-        ),
-        border: const OutlineInputBorder(
-          borderSide: BorderSide(
-            color: Colors.white,
+          enabledBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: kPrimaryColorGrey),
+          ),
+          border: const OutlineInputBorder(
+            borderSide: BorderSide(
+              color: kPrimaryColorGrey,
+            ),
           ),
         ),
       ),

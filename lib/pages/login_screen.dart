@@ -18,131 +18,179 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   GlobalKey<FormState> formKey = GlobalKey();
   bool isLoading = false;
+  bool _isObscure = true;
   String? email;
   String? password;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kPrimaryColor,
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: ModalProgressHUD(
-            inAsyncCall: isLoading,
-            child: Form(
-              key: formKey,
-              child: ListView(
+      body: Column(
+        children: [
+          Container(
+            color: kPrimaryColor,
+            height: 100,
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Row(
                 children: [
-                  Image.asset(
-                    'assets/images/scholar.png',
-                    height: 120,
-                  ),
-                  const Center(
-                    child: Text(
-                      'Scholar chat',
-                      style: TextStyle(
-                        fontSize: 40,
-                        color: Colors.white,
-                        fontFamily: 'pacifico',
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
                   const Text(
-                    'LOGIN',
+                    'Log In',
                     style: TextStyle(
                       fontSize: 35,
                       fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                      color: Colors.black,
                     ),
                   ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  CustomTextFormField(
-                    onChanged: (String data) {
-                      email = data;
-                    },
-                    hintText: 'Email',
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  CustomTextFormField(
-                    onChanged: (data) {
-                      password = data;
-                    },
-                    hintText: 'Password',
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  CustomButton(
-                    onTap: () async {
-                      if (formKey.currentState!.validate()) {
-                        isLoading = true;
-                        setState(() {});
-                        try {
-                          await loginUser();
-                          showSnackBar(context, 'Success');
-                          // Navigator.pushNamed(context, 'bunesscard');
-                        } on FirebaseAuthException catch (e) {
-                          if (e.code == 'user-not-found') {
-                            print('No user found for that email.');
-                             showSnackBar(context, 'No user found for that email.');
-                          } else if (e.code == 'wrong-password') {
-                            print('Wrong password provided for that user.');
-                             showSnackBar(context, 'Wrong password provided for that user.');
-                          }
-                        } catch (e) {
-                          print(e);
-                          showSnackBar(context, 'errorrrrrrrrrrrrrrrrr');
-                        }
-                        isLoading = false;
-                        setState(() {});
-                      } else {
-                        // showSnackBar(context, 'not found');
-                      }
-                    },
-                    text: 'Login',
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        'dont have an account?',
-                        style: TextStyle(
-                          fontSize: 13,
-                          color: Colors.white,
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.pushNamed(context, RegisterPage.id);
-                        },
-                        child: const Text(
-                          'Register',
-                          style: TextStyle(
-                            fontSize: 13,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ],
-                  )
                 ],
               ),
             ),
           ),
-        ),
+          Expanded(
+            child: Container(
+              color: kPrimaryColorWhite,
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: ModalProgressHUD(
+                    inAsyncCall: isLoading,
+                    child: Form(
+                      key: formKey,
+                      child: ListView(
+                        children: [
+                          Text(
+                            'Your email',
+                            style: TextStyle(
+                              color: kPrimaryColorGrey,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          CustomTextFormField(
+                            obscureText: false,
+                            onChanged: (String data) {
+                              email = data;
+                            },
+                            hintText: 'Email',
+                          ),
+                          const SizedBox(
+                            height: 30,
+                          ),
+                          Text(
+                            'password',
+                            style: TextStyle(color: kPrimaryColorGrey),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          CustomTextFormField(
+                            obscureText: _isObscure,
+                            suffix: IconButton(
+                                icon: Icon(_isObscure
+                                    ? Icons.visibility
+                                    : Icons.visibility_off),
+                                onPressed: () {
+                                  setState(() {
+                                    _isObscure = !_isObscure;
+                                  });
+                                }),
+                            onChanged: (data) {
+                              password = data;
+                            },
+                            hintText: 'Password',
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              const Text(
+                                'Forget password?',
+                                style: TextStyle(
+                                  color: kPrimaryColorGrey,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          CustomButton(
+                            onTap: () async {
+                              if (formKey.currentState!.validate()) {
+                                isLoading = true;
+                                setState(() {});
+                                try {
+                                  await loginUser();
+                                  showSnackBar(context, 'Success');
+                                } on FirebaseAuthException catch (e) {
+                                  if (e.code == 'user-not-found') {
+                                    print('No user found for that email.');
+                                    showSnackBar(context,
+                                        'No user found for that email.');
+                                  } else if (e.code == 'wrong-password') {
+                                    print(
+                                        'Wrong password provided for that user.');
+                                    showSnackBar(context,
+                                        'Wrong password provided for that user.');
+                                  }
+                                } catch (e) {
+                                  print(e);
+                                  showSnackBar(
+                                      context, 'errorrrrrrrrrrrrrrrrr');
+                                }
+                                isLoading = false;
+                                setState(() {});
+                              } else {
+                                // showSnackBar(context, 'not found');
+                              }
+                            },
+                            text: 'Log In',
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text(
+                                'dont have an account?',
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  color: kPrimaryColorGrey,
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  try {
+                                    Navigator.pushNamed(
+                                        context, RegisterPage.id);
+                                  } catch (e) {
+                                    print(e);
+                                  }
+                                },
+                                child: const Text(
+                                  'Sign Up',
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    color: kPrimaryColorBlue,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
