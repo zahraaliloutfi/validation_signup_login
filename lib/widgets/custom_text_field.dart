@@ -14,7 +14,7 @@ class CustomTextFormField extends StatelessWidget {
       required this.obscureText});
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 50,
       child: TextFormField(
         keyboardType: TextInputType.visiblePassword,

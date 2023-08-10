@@ -1,4 +1,4 @@
-import 'package:chat_application/pages/register_page.dart';
+import 'package:chat_application/auth_pages/sign_up_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
@@ -28,7 +28,7 @@ class FacebookLogIn extends StatelessWidget {
               child: TextButton(
                   onPressed: () async {
                     await signInWithFacebook();
-                    Navigator.pushNamed(context, RegisterPage.id);
+                    Navigator.pushNamed(context, SignUpPage.id);
                   },
                   child: const Text("sign-in"))),
         ],

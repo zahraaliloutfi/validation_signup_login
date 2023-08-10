@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-import '../pages/register_page.dart';
+import '../auth_pages/sign_up_screen.dart';
 
 class GoogleLogIn extends StatelessWidget {
   const GoogleLogIn({super.key});
@@ -32,16 +32,18 @@ class GoogleLogIn extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Center(
-              child: TextButton(
-                  onPressed: () async {
-                    try {
-                      await signInWithGoogle();
-                      Navigator.pushNamed(context, RegisterPage.id);
-                    } catch (e) {
-                      print('errrrrrrrrrrrrrrrrrror is $e');
-                    }
-                  },
-                  child: const Text("sign-in"))),
+            child: TextButton(
+              onPressed: () async {
+                try {
+                  await signInWithGoogle();
+                  Navigator.pushNamed(context, SignUpPage.id);
+                } catch (e) {
+                  print('errrrrrrrrrrrrrrrrrror is $e');
+                }
+              },
+              child: const Text("sign-in"),
+            ),
+          ),
         ],
       ),
     );
